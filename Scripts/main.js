@@ -32,6 +32,7 @@ class ProcessOutputBuffer {
   }
 }
 
+// Wrapped up process executor, returns a Promise<ProcessOutputBuffer>
 const exec = (cmdline) => new Promise(
   (resolve, reject) => {
     const process = new Process(
@@ -52,9 +53,12 @@ const exec = (cmdline) => new Promise(
   }
 );
 
+// Nova doesn't include the URL API,
+// so we have to do manual string searches
 const PROTOCOL_END_NEEDLE = '://';
 const USERNAME_END_NEEDLE = "git@";
 
+// Function which retrieves a Git web permalink for common SCM services
 const getGitRefToLink = async (path) => {
   const headSHAOutput = await exec(["git", "rev-parse", "HEAD"]).catch((failure) => failure.stderr.trim());
   const headSHA = headSHAOutput.stdout.trim();
@@ -108,6 +112,8 @@ const getGitRefToLink = async (path) => {
   return gitHubURL;
 };
 
+// Function to generate Git URLs
+// returns a Promise<url>
 const commandHandler = (editor, includeLines=false) => {
   if (editor.document.isRemote) {
     return Promise.reject("Document is remote; can't get Git URL");

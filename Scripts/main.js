@@ -1,12 +1,4 @@
-const getPath = (editor) => {
-  // We can't handle remote documents right now
-  if (editor.document.isRemote) {
-    return null;
-  }
-
-  return nova.workspace.relativizePath(editor.document.path);
-};
-
+// Wrapper class to enable accessing the output of a subprocess
 class ProcessOutputBuffer {
   constructor(process) {
     this.process = process;
@@ -109,7 +101,7 @@ const getGitRefToLink = async (path, precedingLineCount, selectionLineCount) => 
 
   console.log(`Host: ${hostname}, Path: ${repoPath}`);
 
-  let lineSuffix;
+  let lineSuffix = '';
 
   if (precedingLineCount) {
     lineSuffix = `#L${precedingLineCount + 1}`
@@ -126,14 +118,26 @@ const getGitRefToLink = async (path, precedingLineCount, selectionLineCount) => 
   return gitHubURL;
 };
 
+const commandHandler = (editor, includeLines=false) => {
+  if (editor.document.isRemote) {
+    return Promise.reject("Document is remote; can't get Git URL");
+  }
+
+  const path = nova.workspace.relativizePath(editor.document.path);
+
+  if (!path) {
+    return Promise.reject("No path to file found; can't get Git URL");
+  }
+
+  console.log(`Path to file: ${path}`);
+
+  return path;
+};
+
 nova.commands.register(
   "github-shortcuts.showFile",
   (editor) => {
-    const path = getPath(editor);
-    if (!path) {
-      return;
-    }
-    console.log(`Path to file: ${path}`);
+    const path = commandHandler(editor);
     getGitRefToLink(path).then((link) => nova.openURL(link));
   }
 );
@@ -141,11 +145,7 @@ nova.commands.register(
 nova.commands.register(
   "github-shortcuts.copyLinkToFile",
   (editor) => {
-    const path = getPath(editor);
-    if (!path) {
-      return;
-    }
-    console.log(`Path to file: ${path}`);
+    const path = commandHandler(editor);
     getGitRefToLink(path).then((link) => nova.clipboard.writeText(link));
   }
 );
@@ -153,11 +153,7 @@ nova.commands.register(
 nova.commands.register(
   "github-shortcuts.showSelection",
   (editor) => {
-    const path = getPath(editor);
-    if (!path) {
-      return;
-    }
-    console.log(`Path to file: ${path}`);
+    const path = commandHandler(editor);
     const linesRange = editor.getLineRangeForRange(editor.selectedRange);
     console.log(`Selection Lines: ${linesRange.start}...${linesRange.end}`);
     const lineCountRange = new Range(0, linesRange.start);
@@ -171,11 +167,7 @@ nova.commands.register(
 nova.commands.register(
   "github-shortcuts.copyLinkToSelection",
   (editor) => {
-    const path = getPath(editor);
-    if (!path) {
-      return;
-    }
-    console.log(`Path to file: ${path}`);
+    const path = commandHandler(editor);
     const linesRange = editor.getLineRangeForRange(editor.selectedRange);
     console.log(`Selection Lines: ${linesRange.start}...${linesRange.end}`);
     const lineCountRange = new Range(0, linesRange.start);

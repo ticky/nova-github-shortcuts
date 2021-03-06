@@ -3,6 +3,7 @@
   "name": "GitHub Shortcuts",
   "organization": "Jessica Stokes",
   "description": "Shortcuts for users of GitHub repositories.",
+  "bugs": "https//github.com/ticky/nova-github-shortcuts/issues",
   "version": "1.0",
   "categories": ["commands"],
 

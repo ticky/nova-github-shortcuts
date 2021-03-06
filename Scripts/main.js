@@ -131,50 +131,50 @@ const commandHandler = (editor, includeLines=false) => {
 
   console.log(`Path to file: ${path}`);
 
-  return path;
+  return Promise.resolve(path);
 };
 
 nova.commands.register(
   "github-shortcuts.showFile",
   (editor) => {
-    const path = commandHandler(editor);
-    getGitRefToLink(path).then((link) => nova.openURL(link));
+    commandHandler(editor).then((path) => getGitRefToLink(path)).then((link) => nova.openURL(link)).catch(nova.workspace.showErrorMessage);
   }
 );
 
 nova.commands.register(
   "github-shortcuts.copyLinkToFile",
   (editor) => {
-    const path = commandHandler(editor);
-    getGitRefToLink(path).then((link) => nova.clipboard.writeText(link));
+    commandHandler(editor).then((path) => getGitRefToLink(path)).then((link) => nova.clipboard.writeText(link)).catch(nova.workspace.showErrorMessage);
   }
 );
 
 nova.commands.register(
   "github-shortcuts.showSelection",
   (editor) => {
-    const path = commandHandler(editor);
-    const linesRange = editor.getLineRangeForRange(editor.selectedRange);
-    console.log(`Selection Lines: ${linesRange.start}...${linesRange.end}`);
-    const lineCountRange = new Range(0, linesRange.start);
-    const selectedLineCount = editor.getTextInRange(linesRange).match(/\n/g)?.length;
-    const precedingLineCount = editor.getTextInRange(lineCountRange).match(/\n/g)?.length;
-    console.log(`Lines in selection: ${selectedLineCount}, Preceding lines: ${precedingLineCount}`);
-    getGitRefToLink(path, precedingLineCount, selectedLineCount).then((link) => nova.openURL(link));
+    commandHandler(editor).then((path) => {
+      const linesRange = editor.getLineRangeForRange(editor.selectedRange);
+      console.log(`Selection Lines: ${linesRange.start}...${linesRange.end}`);
+      const lineCountRange = new Range(0, linesRange.start);
+      const selectedLineCount = editor.getTextInRange(linesRange).match(/\n/g)?.length;
+      const precedingLineCount = editor.getTextInRange(lineCountRange).match(/\n/g)?.length;
+      console.log(`Lines in selection: ${selectedLineCount}, Preceding lines: ${precedingLineCount}`);
+      return getGitRefToLink(path, precedingLineCount, selectedLineCount);
+    }).then((link) => nova.openURL(link)).catch(nova.workspace.showErrorMessage);
   }
 );
 
 nova.commands.register(
   "github-shortcuts.copyLinkToSelection",
   (editor) => {
-    const path = commandHandler(editor);
-    const linesRange = editor.getLineRangeForRange(editor.selectedRange);
-    console.log(`Selection Lines: ${linesRange.start}...${linesRange.end}`);
-    const lineCountRange = new Range(0, linesRange.start);
-    const selectedLineCount = editor.getTextInRange(linesRange).match(/\n/g)?.length;
-    const precedingLineCount = editor.getTextInRange(lineCountRange).match(/\n/g)?.length;
-    console.log(`Lines in selection: ${selectedLineCount}, Preceding lines: ${precedingLineCount}`);
-    getGitRefToLink(path, precedingLineCount, selectedLineCount).then((link) => nova.clipboard.writeText(link));
+    commandHandler(editor).then((path) => {
+      const linesRange = editor.getLineRangeForRange(editor.selectedRange);
+      console.log(`Selection Lines: ${linesRange.start}...${linesRange.end}`);
+      const lineCountRange = new Range(0, linesRange.start);
+      const selectedLineCount = editor.getTextInRange(linesRange).match(/\n/g)?.length;
+      const precedingLineCount = editor.getTextInRange(lineCountRange).match(/\n/g)?.length;
+      console.log(`Lines in selection: ${selectedLineCount}, Preceding lines: ${precedingLineCount}`);
+      return getGitRefToLink(path, precedingLineCount, selectedLineCount);
+    }).then((link) => nova.clipboard.writeText(link)).catch(nova.workspace.showErrorMessage);
   }
 );
 

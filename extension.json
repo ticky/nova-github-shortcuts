@@ -25,16 +25,10 @@
         "when": "documentHasPath"
       },
       {
-        "title": "Open Selected Lines",
-        "paletteTitle": "Open Selected Lines on GitHub",
+        "title": "Open Selection",
+        "paletteTitle": "Open Selection on GitHub",
         "command": "github-shortcuts.showSelection",
         "when": "documentHasPath && editorHasSelection"
-      },
-      {
-        "title": "Open Line",
-        "paletteTitle": "Open Line on GitHub",
-        "command": "github-shortcuts.showSelection",
-        "when": "documentHasPath && !editorHasSelection"
       },
       {
         "title": "Copy Link to File",
@@ -43,16 +37,10 @@
         "when": "documentHasPath"
       },
       {
-        "title": "Copy Link to Selected Lines",
-        "paletteTitle": "Copy GitHub Link to Selected Lines",
+        "title": "Copy Link to Selection",
+        "paletteTitle": "Copy GitHub Link to Selection",
         "command": "github-shortcuts.copyLinkToSelection",
         "when": "documentHasPath && editorHasSelection"
-      },
-      {
-        "title": "Copy Link to Line",
-        "paletteTitle": "Copy GitHub Link to Line",
-        "command": "github-shortcuts.copyLinkToSelection",
-        "when": "documentHasPath && !editorHasSelection"
       }
     ]
   }

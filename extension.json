@@ -1,0 +1,58 @@
+{
+  "identifier": "org.GitHubShortcuts",
+  "name": "GitHub Shortcuts",
+  "organization": "Jessica Stokes",
+  "description": "Shortcuts for users of GitHub repositories.",
+  "version": "1.0",
+  "categories": ["commands"],
+
+  "main": "main.js",
+
+  "activationEvents": ["*"],
+
+  "entitlements": {
+    "clipboard": true,
+    "process": true
+  },
+
+  "commands": {
+    "editor": [
+      {
+        "title": "Open File",
+        "paletteTitle": "Open File on GitHub",
+        "command": "github-shortcuts.showFile",
+        "when": "documentHasPath"
+      },
+      {
+        "title": "Open Selected Lines",
+        "paletteTitle": "Open Selected Lines on GitHub",
+        "command": "github-shortcuts.showSelection",
+        "when": "documentHasPath && editorHasSelection"
+      },
+      {
+        "title": "Open Line",
+        "paletteTitle": "Open Line on GitHub",
+        "command": "github-shortcuts.showSelection",
+        "when": "documentHasPath && !editorHasSelection"
+      },
+      {
+        "title": "Copy Link to File",
+        "paletteTitle": "Copy GitHub Link to File",
+        "command": "github-shortcuts.copyLinkToFile",
+        "when": "documentHasPath"
+      },
+      {
+        "title": "Copy Link to Selected Lines",
+        "paletteTitle": "Copy GitHub Link to Selected Lines",
+        "command": "github-shortcuts.copyLinkToSelection",
+        "when": "documentHasPath && editorHasSelection"
+      },
+      {
+        "title": "Copy Link to Line",
+        "paletteTitle": "Copy GitHub Link to Line",
+        "command": "github-shortcuts.copyLinkToSelection",
+        "when": "documentHasPath && !editorHasSelection"
+      }
+    ]
+  }
+}

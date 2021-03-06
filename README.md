@@ -1,0 +1,2 @@
+# GitHub Shortcuts for Nova
+

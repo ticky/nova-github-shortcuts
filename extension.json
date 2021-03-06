@@ -2,8 +2,10 @@
   "identifier": "org.GitHubShortcuts",
   "name": "GitHub Shortcuts",
   "organization": "Jessica Stokes",
+  "license": "MIT",
   "description": "Shortcuts for users of GitHub repositories.",
-  "bugs": "https//github.com/ticky/nova-github-shortcuts/issues",
+  "repository": "https://github.com/ticky/nova-github-shortcuts",
+  "bugs": "https://github.com/ticky/nova-github-shortcuts/issues",
   "version": "1.0",
   "categories": ["commands"],
 

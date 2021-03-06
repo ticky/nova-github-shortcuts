@@ -56,18 +56,18 @@ const PROTOCOL_END_NEEDLE = '://';
 const USERNAME_END_NEEDLE = "git@";
 
 const getGitRefToLink = async (path, precedingLineCount, selectionLineCount) => {
-  const headSHAOutput = await exec(["git", "rev-parse", "HEAD"]);
+  const headSHAOutput = await exec(["git", "rev-parse", "HEAD"]).catch((failure) => failure.stderr.trim());
   const headSHA = headSHAOutput.stdout.trim();
   console.log(`Head SHA: ${headSHA}`);
   // const branchName = await exec(["git", "symbolic-ref", "--quiet", "--short", "HEAD"]);
 
-  const upstreamBranch = await exec(["git", "rev-parse", "--abbrev-ref", "HEAD@{upstream}"]);
+  const upstreamBranch = await exec(["git", "rev-parse", "--abbrev-ref", "HEAD@{upstream}"]).catch((failure) => failure.stderr.trim());
   console.log(`Upstream Branch: ${upstreamBranch.stdout}`);
 
   const upstreamName = upstreamBranch.stdout.split("/").shift();
   console.log(`Upstream Name: ${upstreamName}`);
 
-  const remoteURL = await exec(["git", "remote", "get-url", upstreamName]);
+  const remoteURL = await exec(["git", "remote", "get-url", upstreamName]).catch((failure) => failure.stderr.trim());
   let remoteURLString = remoteURL.stdout;
   console.log(`Remote URL: ${remoteURLString}`);
 

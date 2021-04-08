@@ -161,7 +161,7 @@ nova.commands.register(
 
 nova.commands.register(
   "github-shortcuts.copyLinkToFile",
-  (editor) => commandHandler(editor).then((url) => nova.clipboard(url).writeText).catch((error) => nova.workspace.showErrorMessage(error))
+  (editor) => commandHandler(editor).then((url) => nova.clipboard.writeText(url)).catch((error) => nova.workspace.showErrorMessage(error))
 );
 
 nova.commands.register(

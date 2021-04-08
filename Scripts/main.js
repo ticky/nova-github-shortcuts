@@ -60,6 +60,9 @@ const USERNAME_END_NEEDLE = "git@";
 
 // Function which retrieves a Git web permalink for common SCM services
 const getGitRefToLink = async (path) => {
+
+  const gitCheck = await exec(["git", "rev-parse"]).catch((failure) => Promise.reject(`The file '${path}' is not in a git repository.`));
+
   const headSHAOutput = await exec(["git", "rev-parse", "HEAD"]).catch((failure) => failure.stderr.trim());
   const headSHA = headSHAOutput.stdout.trim();
   console.log(`Head SHA: ${headSHA}`);

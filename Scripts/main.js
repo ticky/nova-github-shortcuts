@@ -68,7 +68,7 @@ const getGitRefToLink = async (path) => {
   console.log(`Head SHA: ${headSHA}`);
   // const branchName = await exec(["git", "symbolic-ref", "--quiet", "--short", "HEAD"]);
 
-  const upstreamBranch = await exec(["git", "rev-parse", "--abbrev-ref", "HEAD@{upstream}"]).catch((failure) => failure.stderr.trim());
+  const upstreamBranch = await exec(["git", "rev-parse", "--abbrev-ref", "HEAD@{upstream}"]).catch((failure) => Promise.reject("No upstream configured for branch."));
   console.log(`Upstream Branch: ${upstreamBranch.stdout}`);
 
   const upstreamName = upstreamBranch.stdout.split("/").shift();
